@@ -1,0 +1,27 @@
+{
+  "name": "Streamers",
+  "version": "0.0.1",
+  "description": "A video streaming service for educational use.",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "express": "^4.10.2",
+    "hbs": "^2.7.0",
+    "socket.io": "^1.2.0",
+    "hbs-utils": "^0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keawade/Streamers.git"
+  },
+  "author": "keawade its3",
+  "license": "GNU 2",
+  "bugs": {
+    "url": "https://github.com/keawade/Streamers/issues"
+  },
+  "homepage": "https://github.com/keawade/Streamers"
+}

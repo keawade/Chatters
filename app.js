@@ -1,9 +1,24 @@
+var debug = (function(){
+    var timestamp = function(){};
+    timestamp.toString = function(){
+        return "[DEBUG " + (new Date).toLocaleTimeString() + "]";    
+    };
+
+    return {
+        log: console.log.bind(console, '%s', timestamp)
+    };
+})();
+
 // Required apps.
 var express = require('express');
 var hbs = require('hbs');
 var hbsutils = require('hbs-utils')(hbs);
 var bodyParser = require('body-parser');
 var routes = require('./routes/');
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 
 // Create new express app.
 var app = express();
@@ -27,12 +42,18 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+io.on('connection', function(socket){
+    console.log('a user connected');
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
+});
+
 // Bring in the routes
 app.use(routes.setup(app));
 
 // Run the server
 var server = app.listen(app.get('port'), app.get('ip'), function() {
     var address = server.address();
-    console.log("Streamers app running on https://%s:%s",
-        address.address, address.port);
+    debug.log("Streamers app running on https://" + address.address + ":" + address.port);
 });

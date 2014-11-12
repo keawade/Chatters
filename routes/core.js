@@ -5,12 +5,6 @@ var express = require('express');
 exports.setup = function(app) {
     var router = express.Router();
     
-    router.get('/', function(req, res, next) {
-        res.render('index', {
-            title: "Streamers"
-        });
-    });
-    
 //    router.all('*', ensureAuthenticated('/login'));
 
     return router;

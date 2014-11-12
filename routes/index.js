@@ -1,4 +1,5 @@
 var express = require('express');
+
 exports.setup = function(app) {
     var router = express.Router();
     
@@ -8,10 +9,13 @@ exports.setup = function(app) {
     });
     
     // Register the routes in order.
-    var core = require('./core');
-    var error = require('./error');
-
-    router.use(core.setup(app));
+//    var core = require('./core');       // Registers ensureAuthenticated.
+    var routes = require('./routes');   // Registers all other site routes.
+    var error = require('./error');     // Registers error handlers.
+    
+    // Use the registered routes in order.
+//    router.use(core.setup(app));
+    router.use(routes.setup(app));
     router.use(error.setup(app));
 
     return router;
