@@ -15,13 +15,41 @@ var hbs = require('hbs');
 var hbsutils = require('hbs-utils')(hbs);
 var bodyParser = require('body-parser');
 var routes = require('./routes/');
+var path = require('path');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
+var ensureLogin = require('connect-ensure-login');
+var ensureAuthenticated = ensureLogin.ensureAuthenticated;
+var user = require('./Models/User');
 
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require('http');
 
+// Connect to our mongodb server
+mongoose.connect('mongodb://'+ (process.env.IP || 'localhost') + '/users');
 
 // Create new express app.
 var app = express();
+var server = http.createServer(app);
+
+// cookieParser() and session() need to be initialized before passport.
+app.use(cookieParser('old string'));
+app.use(session({
+    secret: 'old string',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Configure passport.
+passport.use(user.createStrategy());
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
+
+// Initialize passport.
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Register partial hbs files
 hbsutils.registerPartials('./views/partials');
@@ -36,24 +64,17 @@ app.set('port', process.env.PORT || 8000);
 app.set('ip', process.env.IP || '0.0.0.0');
 
 // Set root directory.
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    });
-});
-
 // Bring in the routes
-app.use(routes.setup(app));
+app.use(routes.setup(app, server));
 
 // Run the server
-var server = app.listen(app.get('port'), app.get('ip'), function() {
-    var address = server.address();
-    debug.log("Streamers app running on https://" + address.address + ":" + address.port);
+server.listen(app.get('port'), app.get('ip'), function() {
+    var addr = server.address();
+    debug.log("Streamers app running on https://" + addr.address + ":" + addr.port);
 });

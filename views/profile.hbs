@@ -1,0 +1,9 @@
+<div class="container">
+    {{profile1}}
+    
+    {{#if owner}}
+    <form>
+        <a href="/{{owner.username}}/profile/edit" class="btn btn-primary">Edit</a>
+    </form>
+    {{/if}}
+</div>
