@@ -10,11 +10,18 @@ body {
     padding: 5px 10px;
 }
 
-.m-chat {
+.m-user {
     list-style: none;
+    font-style: normal;
+    font-weight: bold;
 }
 
-.m-user {
+.m-chat {
     display: inline-block;
-    font-style: bold;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.m-status {
+    font-style: italic;
 }

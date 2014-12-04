@@ -10,15 +10,11 @@ var debug = (function(){
 })();
 
 var express = require('express');
-var io = require('socket.io');
 var user = require('../Models/User');
 var passport = require('passport');
 
 exports.setup = function(app) {
     var router = express.Router();
-    var server = require('http').createServer(app);
-    var io = require('socket.io')(server);
-    
     
     app.use(function(req, res, next) {
         var user = req.user;
@@ -41,12 +37,12 @@ exports.setup = function(app) {
     router.get('/:username/profile', function(req, res, next) {
         if (req.params.username === res.locals.user.username) {
             res.render('profile', {
-                title: "Profile: " + req.params.username,
+                title: "Profile: " + req.params.username + " | Streamers",
                 owner: res.locals.user
             });
         } else {
             res.render('profile', {
-                title: "Profile: " + req.params.username,
+                title: "Profile: " + req.params.username + " | Streamers",
             });
         }
     });
@@ -69,7 +65,7 @@ exports.setup = function(app) {
     
     router.get('/test', function(req, res, next) {
         res.render('test', {
-            title: "Never gonna give you up. | Streamers",
+            title: "LOL | Streamers",
         });
     });
     
@@ -96,16 +92,17 @@ exports.setup = function(app) {
     
     router.post('/register', registerUser);
     
-    router.get('/nottest', function(req, res){
+    router.get('/chat', function(req, res){
         res.render('chat', {
-            title: "Not Test | Streamers"
+            title: "Chat | Streamers",
+            chat: true
         })
     });
     
     function registerUser(req, res, next) {
         if(req.body.inputPass != req.body.inputPassConf) {
             res.render('register', {
-                title: 'Register',
+                title: 'Register | Streamers',
                 notification: {
                     message: "Passwords did not match.",
                     message_title: 'Check Password'
@@ -118,7 +115,7 @@ exports.setup = function(app) {
     }), req.body.inputPass, function(err, user) {
         if (err) {
             return res.render('register', {
-                title: "Create a new account",
+                title: "Register | Streamers",
                 notification: {
                     message: 'unable to register user: ' + err, 
                     message_title: 'Error'
@@ -147,7 +144,7 @@ exports.setup = function(app) {
             }
             if (!user) {
                 return res.render('login', {
-                    title: "Log in",
+                    title: "Log In | Streamers",
                     notification: {
                         severity: 'error',
                         message: "The username and password you provided is incorrect. Please try again."
