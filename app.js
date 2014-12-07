@@ -24,7 +24,7 @@ var mongoSession = require('connect-mongo')(session);
 //var LocalStrategy = require('passport-local').Strategy;
 //var ensureLogin = require('connect-ensure-login');
 //var ensureAuthenticated = ensureLogin.ensureAuthenticated;
-var user = require('./Models/User');
+var user = require('./Models/user');
 
 var http = require('http');
 

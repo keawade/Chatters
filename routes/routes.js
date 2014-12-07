@@ -10,7 +10,7 @@ var debug = (function(){
 })();
 
 var express = require('express');
-var user = require('../Models/User');
+var user = require('../Models/user');
 var passport = require('passport');
 
 exports.setup = function(app) {
@@ -29,7 +29,7 @@ exports.setup = function(app) {
     
     router.get('/', function(req, res, next) {
         res.render('index', {
-            title: "Home | Streamers",
+            title: "Home | Chatters",
             user: res.locals.user
         });
     });
@@ -37,12 +37,12 @@ exports.setup = function(app) {
     router.get('/:username/profile', function(req, res, next) {
         if (req.params.username === res.locals.user.username) {
             res.render('profile', {
-                title: "Profile: " + req.params.username + " | Streamers",
+                title: "Profile: " + req.params.username + " | Chatters",
                 owner: res.locals.user
             });
         } else {
             res.render('profile', {
-                title: "Profile: " + req.params.username + " | Streamers",
+                title: "Profile: " + req.params.username + " | Chatters",
             });
         }
     });
@@ -50,7 +50,7 @@ exports.setup = function(app) {
     router.get('/:username/profile/edit', function(req, res, next) {
         if (req.params.username === res.locals.user.username) {
             res.render('profileEdit', {
-                title: "Profile: " + req.params.username + " | Streamers",
+                title: "Profile: " + req.params.username + " | Chatters",
                 owner: res.locals.user
             });
         } else {
@@ -65,20 +65,20 @@ exports.setup = function(app) {
     
     router.get('/test', function(req, res, next) {
         res.render('test', {
-            title: "LOL | Streamers",
+            title: "LOL | Chatters",
         });
     });
     
     router.get('/about', function(req, res, next) {
         res.render('about', {
-            title: "About | Streamers",
+            title: "About | Chatters",
             user: res.locals.user
         });
     });
     
     router.get('/login', function(req, res, next) {
         res.render('login', {
-            title: "Log In | Streamers"
+            title: "Log In | Chatters"
         });
     });
     
@@ -86,7 +86,7 @@ exports.setup = function(app) {
     
     router.get('/register', function(req, res, next) {
         res.render('register', {
-            title: "Register | Streamers"
+            title: "Register | Chatters"
         });
     });
     
@@ -94,7 +94,7 @@ exports.setup = function(app) {
     
     router.get('/chat', function(req, res){
         res.render('chat', {
-            title: "Chat | Streamers",
+            title: "Chat | Chatters",
             chat: true
         })
     });
@@ -102,7 +102,7 @@ exports.setup = function(app) {
     function registerUser(req, res, next) {
         if(req.body.inputPass != req.body.inputPassConf) {
             res.render('register', {
-                title: 'Register | Streamers',
+                title: 'Register | Chatters',
                 notification: {
                     message: "Passwords did not match.",
                     message_title: 'Check Password'
@@ -115,7 +115,7 @@ exports.setup = function(app) {
     }), req.body.inputPass, function(err, user) {
         if (err) {
             return res.render('register', {
-                title: "Register | Streamers",
+                title: "Register | Chatters",
                 notification: {
                     message: 'unable to register user: ' + err, 
                     message_title: 'Error'
@@ -131,6 +131,92 @@ exports.setup = function(app) {
         }
     }
     
+    router.get('/joinroom', function(req, res, next) {
+        res.render('joinRoom', {
+            title: "Join Room | Chatters"
+        });
+    });
+    
+    router.post('/joinroom', joinRoom);
+    
+    
+    
+    function joinRoom(req, res, next) {
+        req.user.findRoom(req.body.roomName, req.body.owner, function(err, chat) {
+            if(chat){
+                res.redirect('/' + chat.owner + '/' + chat.name);
+            }
+            else {
+                res.render('joinRoom', {
+                    title: "Join Room | Chatters",
+                    notification: {
+                        message_title: "Error",
+                        message: "Requested room does not exist.",
+                        severity: "error"
+                    }
+                });
+            }
+        });
+    }
+    
+    router.get('/createroom', function(req, res, next) {
+        res.render('createRoom', {
+            title: "Create Room | Chatters"
+        });
+    });
+    
+    router.post('/createroom', createRoom);
+    
+    function createRoom(req, res, next) {
+        if (req.body.action === 'delete') {
+            return deleteRoom(req, res, next);
+        }
+
+        req.user.findRoomById(req.params.id, function(err, chat) {
+            if(req.body.roomName == 'profile'){
+                res.render('createRoom', {
+                    title: "Create Room | Chatters",
+                    notification: {
+                        message_title: "Error",
+                        message: "Requested room name unavailable.",
+                        severity: "warning"
+                    }
+                });
+            }
+            else {
+                if(!chat) {
+                    chat = req.user.newRoom();
+                    chat.created = Date();
+                }
+        
+                chat.set({
+                   name: req.body.roomName
+                });
+        
+                chat.save(function(err) {
+                    if (err) {
+                        res.render('createRoom', {
+                            title: "Error Creating Room: " + chat.name + " | Chatters",
+                            notification: {
+                                message_title: "Error Creating Room " + chat.name,
+                                message: err
+                            }
+                        });
+                    } else {
+                        res.redirect('/' + res.locals.user.username + '/' + req.body.roomName);
+                    }
+                });
+            }
+        });
+    }
+    
+    router.get('/:username/:chatname', function(req, res, next){
+        res.render('chat', {
+            title: req.params.chatname + " | Chatters",
+            owner: req.params.username
+        });
+    });
+    
     router.get('/logout', function(req, res){
         debug.log("User logged out.");
         req.logout();
@@ -144,7 +230,7 @@ exports.setup = function(app) {
             }
             if (!user) {
                 return res.render('login', {
-                    title: "Log In | Streamers",
+                    title: "Log In | Chatters",
                     notification: {
                         severity: 'error',
                         message: "The username and password you provided is incorrect. Please try again."

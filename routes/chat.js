@@ -24,6 +24,12 @@ exports.setup = function(app, server) {
     io.on('connection', function (socket) {
         console.log(socket.request.user.username + ' connected to chat');
         io.emit('connected', socket.request.user.username);
+        messages.forEach(function (message) {
+          socket.emit('abc', {
+            msg: message,
+            username: "past chat"
+          });
+        })
     
       //sockets.push(socket);
     

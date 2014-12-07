@@ -23,5 +23,6 @@ body {
 }
 
 .m-status {
+    list-style: none;
     font-style: italic;
 }
