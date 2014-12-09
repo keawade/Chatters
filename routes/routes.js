@@ -213,7 +213,8 @@ exports.setup = function(app) {
     router.get('/:username/:chatname', function(req, res, next){
         res.render('chat', {
             title: req.params.chatname + " | Chatters",
-            owner: req.params.username
+            owner: req.params.username,
+            chat: true
         });
     });
     
