@@ -2,14 +2,10 @@ var mongoose = require('mongoose');
 
 // Define the schema for a chat
 var chatRoom = new mongoose.Schema({
-   
-   name: {type: String, required: true},
+
+    name: {type: String, required: true},
 	owner: {type: String, required: true},
-	messages: {
-	    username: String,
-	    message: String,
-	    timestamp: Date
-	},
+	messages: [Object],
 	mods: [String],
 	members: [String],
 	whitelist: Boolean,

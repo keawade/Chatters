@@ -171,7 +171,7 @@ exports.setup = function(app) {
         if (req.body.action === 'delete') {
             return deleteRoom(req, res, next);
         }
-
+        
         req.user.findRoomById(req.params.id, function(err, chat) {
             if(req.body.roomName == 'profile'){
                 res.render('createRoom', {
@@ -211,11 +211,29 @@ exports.setup = function(app) {
     }
     
     router.get('/:username/:chatname', function(req, res, next){
-        res.render('chat', {
-            title: req.params.chatname + " | Chatters",
-            owner: req.params.username,
-            chat: true
-        });
+        if(res.locals.user == undefined) {
+            res.redirect('/');
+        } else {
+            req.user.findRoom(req.params.chatname, req.params.username, function(err, chat) {
+                if(chat) {
+                    res.render('chat', {
+                        title: req.params.chatname + " | Chatters",
+                        owner: req.params.username,
+                        chat: true
+                    });
+                } else {
+                    res.render('index', {
+                        title: "Home | Chatters",
+                        user: res.locals.user,
+                        notification: {
+                            message_title: 'Error',
+                            message: 'That room does not exist.',
+                            severity: 'error'
+                        }
+                    });
+                }
+            });
+        }
     });
     
     router.get('/logout', function(req, res){

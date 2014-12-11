@@ -1,7 +1,7 @@
 var debug = (function(){
     var timestamp = function(){};
     timestamp.toString = function(){
-        return "[DEBUG " + (new Date).toLocaleTimeString() + "]";    
+        return "[DEBUG " + (new Date).toLocaleTimeString() + "]";
     };
 
     return {
@@ -62,7 +62,7 @@ app.use(passport.session());
 
 // Register partial hbs files
 hbsutils.registerPartials('./views/partials');
-hbsutils.registerWatchedPartials('./views/partials');
+//hbsutils.registerWatchedPartials('./views/partials');
 
 // Set Handlebars running and as the engine for html
 app.set('view engine', 'hbs');
