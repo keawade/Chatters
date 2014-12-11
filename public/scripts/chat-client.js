@@ -19,6 +19,7 @@ socket.on('abc', function(msg) {
 });
 
 socket.on('connected', function(name) {
+    $('#' + name).remove();
     $('#roster1').append($('<div id="' + name + '">').text(name));
 });
 
