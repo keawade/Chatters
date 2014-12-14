@@ -1,24 +1,33 @@
 <div class="container">
-    <div class="panel panel-info col-md-8">
-        <div class="panel-heading">
-            Chat | Streamers
+    <div class='row'>
+        <div class="col-md-9">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    {{title}}
+                </div>
+                <div class="panel-body">
+                    <ul id="messages"></ul>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <ul id="messages"></ul>
+        <div class='col-md-3'>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Roster
+                </div>
+                <div class="panel-body">
+                    <ul id="roster1"></ul>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
-    <div class="panel panel-info col-md-3">
-        <div class="panel-heading">
-            Roster
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class="form-group">
+                <form action="">
+                    <input id="m-in" autocomplete="off" class="form-control" /><button class="btn btn-primary">Send</button>
+                </form>
+            </div>
         </div>
-        <div class="panel-body">
-            <ul id="roster1"></ul>
-        </div>
-    </div>
-    <div class="form-group col-md-8">
-        <form action="">
-            <input id="m-in" autocomplete="off" class="form-control" /><button class="btn btn-primary">Send</button>
-        </form>
     </div>
 </div>

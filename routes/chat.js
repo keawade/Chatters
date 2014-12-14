@@ -47,13 +47,13 @@ exports.setup = function(app, server) {
       socket.leave(socket.room);
       console.log("%s left %s", socket.request.user.username, socket.room);
 //      chats.splice(chats.indexOf(socket), 1);
-      roster.splice(roster.indexOf(socket.request.user.username), 1);
+      roster.slice(roster.indexOf(socket.request.user.username), (roster.indexOf(socket.request.user.username) + 1));
     });
 
     socket.on('abc', function(msg) {
-      var max = 100;
-      var text1 = String(msg);
-      var text = text1.substring(0, Math.min(max, text1.length));
+  //    var max = 100;
+      var text = String(msg);
+  //    var text = text1.substring(0, Math.min(max, text1.length));
       if (!text)
         return;
       console.log("%s | %s: %s", socket.room, socket.request.user.username, text);

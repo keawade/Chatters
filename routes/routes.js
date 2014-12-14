@@ -217,7 +217,7 @@ exports.setup = function(app) {
             req.user.findRoom(req.params.chatname, req.params.username, function(err, chat) {
                 if(chat) {
                     res.render('chat', {
-                        title: req.params.chatname + " | Chatters",
+                        title: req.params.chatname + ' | ' + req.params.username,
                         owner: req.params.username,
                         chat: true
                     });

@@ -15,7 +15,7 @@ $('form').submit(function() {
 
 socket.on('abc', function(msg) {
     $('#messages').append($('<li class="m-user">').text(msg.timeStamp + " " + msg.username + ": "));
-    $('li:last').append($('<div class="m-chat">').text(msg.msg));
+    $('li:last').append($('<p class="m-chat">').text(msg.msg));
 });
 
 socket.on('connected', function(name) {
