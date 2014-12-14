@@ -85,5 +85,5 @@ app.use(routes.setup(app, server));
 // Run the server
 server.listen(app.get('port'), app.get('ip'), function() {
     var addr = server.address();
-    debug.log("Streamers app running on https://" + addr.address + ":" + addr.port);
+    debug.log("Chatters app running on https://" + addr.address + ":" + addr.port);
 });

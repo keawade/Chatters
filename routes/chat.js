@@ -81,7 +81,7 @@ exports.setup = function(app, server) {
           {_id: chat._id},
           {$push: {"messages": {username: socket.request.user.username, message: text, timeStamp: mydate}}}
         )
-        console.log(chat);
+        //console.log(chat);
       });
     });
   });

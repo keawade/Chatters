@@ -5,7 +5,7 @@
                 <div class="panel-heading">
                     {{title}}
                 </div>
-                <div class="panel-body">
+                <div class="panel-body panel-chat">
                     <ul id="messages"></ul>
                 </div>
             </div>
@@ -25,7 +25,14 @@
         <div class='col-md-12'>
             <div class="form-group">
                 <form action="">
-                    <input id="m-in" autocomplete="off" class="form-control" /><button class="btn btn-primary">Send</button>
+                    <div class='row'>
+                        <div class='col-md-9'>
+                            <input id="m-in" autocomplete="off" class="form-control" />
+                        </div>
+                        <div class='col-md-1'>
+                            <button class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

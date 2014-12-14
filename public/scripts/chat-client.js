@@ -13,9 +13,21 @@ $('form').submit(function() {
     return false;
 });
 
+function scroll(){
+//    var item = document.getElementById('#messages').lastChild;
+//    item.scrollIntoView();
+    document.getElementsByTagName('input')[0].scrollIntoView();
+    
+//    var objDiv = document.getElementById("messages");
+//    objDiv.scrollTop = objDiv.scrollHeight;
+    
+//    $("#messages").scrollTop($("#messages")[0].scrollHeight);
+}
+
 socket.on('abc', function(msg) {
     $('#messages').append($('<li class="m-user">').text(msg.timeStamp + " " + msg.username + ": "));
     $('li:last').append($('<p class="m-chat">').text(msg.msg));
+    scroll();
 });
 
 socket.on('connected', function(name) {
